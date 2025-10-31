@@ -17,26 +17,18 @@ const appBg = document.body;
 async function getWeather(city) {
   try {
     errorMsg.textContent = "";
-    weatherIcon.style.display = "none"; // hide old icon before search
+    weatherIcon.style.display = "none";
 
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
     );
 
-    if (!response.ok) {
-      throw new Error("City not found");
-    }
+    if (!response.ok) throw new Error("City not found");
 
     const data = await response.json();
     displayWeather(data);
   } catch (error) {
-    errorMsg.textContent = "❌ City not found. Please try again.";
-    cityName.textContent = "";
-    temperature.textContent = "";
-    humidity.textContent = "";
-    condition.textContent = "";
-    weatherIcon.src = "";
-    weatherIcon.style.display = "none";
+    showError("❌ City not found. Please try again.");
   }
 }
 
@@ -52,16 +44,19 @@ function displayWeather(data) {
   humidity.textContent = `💧 Humidity: ${humid}%`;
   condition.textContent = `🌥️ Condition: ${desc}`;
 
-  // ✅ Proper Weather Icon URL
   weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   weatherIcon.alt = desc;
-  weatherIcon.style.display = "block"; // show icon after loading
+  weatherIcon.style.display = "block";
 
-  // 🔄 Background change based on weather
+  changeBackground(desc);
+}
+
+// ✅ Change background color based on weather
+function changeBackground(desc) {
   if (desc.includes("Cloud")) {
     appBg.style.background = "linear-gradient(135deg, #bdc3c7, #2c3e50)";
   } else if (desc.includes("Rain")) {
-    appBg.style.background = "linear-gradient(135deg, #667db6, #0082c8, #0082c8, #667db6)";
+    appBg.style.background = "linear-gradient(135deg, #667db6, #0082c8, #667db6)";
   } else if (desc.includes("Clear")) {
     appBg.style.background = "linear-gradient(135deg, #f6d365, #fda085)";
   } else {
@@ -69,22 +64,34 @@ function displayWeather(data) {
   }
 }
 
+// ✅ Show error and clear old data
+function showError(msg) {
+  errorMsg.textContent = msg;
+  cityName.textContent = "";
+  temperature.textContent = "";
+  humidity.textContent = "";
+  condition.textContent = "";
+  weatherIcon.src = "";
+  weatherIcon.style.display = "none";
+}
+
 // ✅ Current Location Weather
 locationBtn.addEventListener("click", () => {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success => {
-      const { latitude, longitude } = success.coords;
-      fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`
-      )
-        .then(res => res.json())
-        .then(data => displayWeather(data))
-        .catch(() => {
-          errorMsg.textContent = "⚠️ Unable to fetch location weather.";
-        });
-    });
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`
+        )
+          .then((res) => res.json())
+          .then((data) => displayWeather(data))
+          .catch(() => showError("⚠️ Unable to fetch location weather."));
+      },
+      () => showError("⚠️ Permission denied for location.")
+    );
   } else {
-    errorMsg.textContent = "⚠️ Geolocation not supported in this browser.";
+    showError("⚠️ Geolocation not supported in this browser.");
   }
 });
 
@@ -92,5 +99,5 @@ locationBtn.addEventListener("click", () => {
 searchBtn.addEventListener("click", () => {
   const city = cityInput.value.trim();
   if (city) getWeather(city);
-  else errorMsg.textContent = "Please enter a city name!";
+  else showError("Please enter a city name!");
 });

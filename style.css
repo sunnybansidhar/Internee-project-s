@@ -11,19 +11,21 @@ body {
 
 .app {
   text-align: center;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
   padding: 30px;
   border-radius: 20px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  width: 300px;
+  width: 320px;
+  max-width: 90%;
 }
 
 .search-box {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 input {
@@ -32,6 +34,7 @@ input {
   border: none;
   outline: none;
   width: 150px;
+  font-size: 14px;
 }
 
 button {
@@ -42,6 +45,7 @@ button {
   padding: 10px 12px;
   cursor: pointer;
   transition: background 0.3s;
+  font-size: 14px;
 }
 
 button:hover {
@@ -49,12 +53,24 @@ button:hover {
 }
 
 .weather-info img {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
+  margin-top: 10px;
 }
 
 .error {
   color: red;
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 5px;
+}
+
+@media (max-width: 480px) {
+  .app {
+    width: 90%;
+    padding: 20px;
+  }
+
+  input {
+    width: 100%;
+  }
 }
