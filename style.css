@@ -1,88 +1,76 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #3a3d40, #181719);
-  color: white;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
+  background: linear-gradient(135deg, #74ebd5, #acb6e5);
+  transition: background 0.6s ease;
 }
 
-.container {
-  background: #222;
-  padding: 30px;
-  border-radius: 15px;
-  width: 350px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-}
-
-h1 {
+.app {
   text-align: center;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  width: 320px;
+  max-width: 90%;
+}
+
+.search-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
-.input-section {
-  display: flex;
-  gap: 10px;
-}
-
-#taskInput {
-  flex: 1;
+input {
   padding: 10px;
   border-radius: 8px;
   border: none;
   outline: none;
+  width: 150px;
+  font-size: 14px;
 }
 
-#addBtn {
-  background: #00bcd4;
+button {
+  background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 15px;
   border-radius: 8px;
+  padding: 10px 12px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background 0.3s;
+  font-size: 14px;
 }
 
-#addBtn:hover {
-  background: #0097a7;
+button:hover {
+  background-color: #0056b3;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
+.weather-info img {
+  width: 90px;
+  height: 90px;
+  margin-top: 10px;
 }
 
-li {
-  background: #333;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.error {
+  color: red;
+  font-weight: bold;
+  margin-top: 5px;
 }
 
-button.edit,
-button.delete {
-  border: none;
-  padding: 5px 8px;
-  border-radius: 5px;
-  cursor: pointer;
-}
+@media (max-width: 480px) {
+  .app {
+    width: 90%;
+    padding: 20px;
+  }
 
-button.edit {
-  background: #4caf50;
-  color: white;
-}
-
-button.delete {
-  background: #f44336;
-  color: white;
+  input {
+    width: 100%;
+  }
 }
